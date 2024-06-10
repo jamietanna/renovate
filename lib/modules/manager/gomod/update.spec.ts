@@ -408,6 +408,14 @@ describe('modules/manager/gomod/update', () => {
       expect(res).toContain(`${upgrade.newValue} // indirect`);
     });
 
+    it('should NOT return null for replacement', () => {
+      const res = updateDependency({
+        fileContent: '',
+        upgrade: { updateType: 'replacement' },
+      });
+      expect(res).not.toBeNull();
+    });
+
     it('should perform package replacements', () => {
       const upgrade = {
         depName: 'github.com/aws/aws-sdk-go',
