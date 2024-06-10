@@ -75,7 +75,10 @@ export function updateDependency({
       return null;
     }
     let newLine: string;
-    if (upgrade.updateType === 'digest') {
+    if (
+      upgrade.updateType === 'digest' ||
+      upgrade.updateType === 'replacement' && upgrade.newDigest
+    ) {
       const newDigestRightSized = upgrade.newDigest!.substring(
         0,
         upgrade.currentDigest!.length,

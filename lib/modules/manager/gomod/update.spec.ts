@@ -449,7 +449,7 @@ describe('modules/manager/gomod/update', () => {
     it('should perform package replacements for a digest version', () => {
       const upgrade = {
         depName: 'golang.org/x/net',
-        managerData: { lineNumber: 54 },
+        managerData: { lineNumber: 54, multiLine: true },
         currentDigest: 'c39426892332',
         newDigest: 'foo',
         depType: 'require',
@@ -459,7 +459,7 @@ describe('modules/manager/gomod/update', () => {
       };
       const res = updateDependency({ fileContent: gomod2, upgrade });
       expect(res).not.toEqual(gomod2);
-      expect(res).toContain(`golang.org/foo-x-bar/net v0.0.0-20180811021610-foo`);
+      expect(res).toContain(`golang.org/foo-x-bar/net foo`);
     });
 
     it('should perform package replacements for a major version', () => {
