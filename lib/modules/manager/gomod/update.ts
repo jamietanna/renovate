@@ -63,7 +63,7 @@ export function updateDependency({
       }
     } else if (depType === 'require' || depType === 'indirect') {
       if (upgrade.managerData.multiLine) {
-        updateLineExp = regEx(/^(?<depPart>\s+)(<depName>[^\s]+)(?<divider>\s+)[^\s]+/);
+        updateLineExp = regEx(/^(?<depPart>\s+)(?<depName>[^\s]+)(?<divider>\s+)[^\s]+/);
       } else {
         updateLineExp = regEx(
           /^(?<depPart>require\s+)(?<depName>[^\s]+)(?<divider>\s+)[^\s]+/,
