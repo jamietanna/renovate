@@ -469,6 +469,20 @@ describe('modules/manager/gomod/update', () => {
       expect(res).toContain(`github.com/testify-core/testify/v2 v2.0.0`);
     });
 
+    it('should perform package replacements for a replace directive', () => {
+      const upgrade = {
+        depName: 'github.com/pravesht/gocql',
+        managerData: { lineNumber: 11 },
+        newValue: 'v0.0.1',
+        depType: 'replace',
+
+        updateType: 'replacement' as UpdateType,
+        newName: 'github.com/pravesht/gocql-new',
+      };
+      const res = updateDependency({ fileContent: gomod1, upgrade });
+      expect(res).not.toEqual(gomod1);
+      expect(res).toContain(`github.com/pravesht/gocql-new v0.0.1`);
+    });
     /* TODO: replace
 
     gomod1
