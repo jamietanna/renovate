@@ -384,14 +384,6 @@ describe('modules/manager/gomod/update', () => {
       expect(res).toContain('k8s.io/client-go/v2 => k8s.io/client-go v2.2.2');
     });
 
-    it('should return null for replacement', () => {
-      const res = updateDependency({
-        fileContent: '',
-        upgrade: { updateType: 'replacement' },
-      });
-      expect(res).toBeNull();
-    });
-
     it('should perform indirect upgrades when top-level', () => {
       const upgrade = {
         depName: 'github.com/davecgh/go-spew',
@@ -415,5 +407,83 @@ describe('modules/manager/gomod/update', () => {
       expect(res).not.toEqual(gomod2);
       expect(res).toContain(`${upgrade.newValue} // indirect`);
     });
+
+    it('should perform package replacements', () => {
+      const upgrade = {
+        depName: 'github.com/aws/aws-sdk-go',
+        managerData: { lineNumber: 4 },
+        newValue: 'v1.27.1',
+        depType: 'require',
+
+        updateType: 'replacement' as UpdateType,
+        newName: 'github.com/aws/aws-sdk-go-v2',
+      };
+      const res = updateDependency({ fileContent: gomod1, upgrade });
+      expect(res).not.toEqual(gomod1);
+      expect(res).toContain(`github.com/aws/aws-sdk-go-v2 v1.27.1`);
+    });
+
+    it('should perform package replacements for a digest version', () => {
+      const upgrade = {
+        depName: 'golang.org/x/net',
+        managerData: { lineNumber: 55 },
+        currentDigest: 'c39426892332',
+        newDigest: 'foo',
+        depType: 'require',
+
+        updateType: 'replacement' as UpdateType,
+        newName: 'golang.org/foo-x-bar/net',
+      };
+      const res = updateDependency({ fileContent: gomod2, upgrade });
+      expect(res).not.toEqual(gomod2);
+      expect(res).toContain(`golang.org/foo-x-bar/net v0.0.0-20180811021610-foo`);
+    });
+
+    it('should perform package replacements for a major version', () => {
+      const upgrade = {
+        depName: 'github.com/stretchr/testify',
+        managerData: { lineNumber: 49 },
+        newValue: 'v2.0.0',
+        depType: 'require',
+
+        updateType: 'replacement' as UpdateType,
+        newName: 'github.com/testify-core/testify/v2',
+      };
+      const res = updateDependency({ fileContent: gomod2, upgrade });
+      expect(res).not.toEqual(gomod2);
+      expect(res).toContain(`github.com/testify-core/testify/v2 v2.0.0`);
+    });
+
+    /* TODO: replace
+
+    gomod1
+
+    can perform a minor version upgrade
+
+  github.com/aws/aws-sdk-go v1.15.21
+  with
+  -v2 v1.27.1
+
+
+    gomod2
+
+    can perform a replacement for a digest version
+
+  golang.org/x/net v0.0.0-20191003171128-d98b1b443823 // indirect
+  with
+  golang.org/x/net v0.0.0-TODO-bar // indirect
+
+
+
+
+  can perform a major upgrade with a replacement
+
+  gomod2
+  github.com/stretchr/testify
+  with
+  github.com/stretchr/testify/v2 v2.0.0
+
+ TODO:
+  */
   });
 });
