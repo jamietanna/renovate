@@ -449,7 +449,7 @@ describe('modules/manager/gomod/update', () => {
     it('should perform package replacements for a digest version', () => {
       const upgrade = {
         depName: 'golang.org/x/net',
-        managerData: { lineNumber: 55 },
+        managerData: { lineNumber: 54 },
         currentDigest: 'c39426892332',
         newDigest: 'foo',
         depType: 'require',
@@ -465,7 +465,7 @@ describe('modules/manager/gomod/update', () => {
     it('should perform package replacements for a major version', () => {
       const upgrade = {
         depName: 'github.com/stretchr/testify',
-        managerData: { lineNumber: 49 },
+        managerData: { lineNumber: 48, multiLine: true },
         newValue: 'v2.0.0',
         depType: 'require',
 
