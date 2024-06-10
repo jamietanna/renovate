@@ -54,11 +54,11 @@ export function updateDependency({
     if (depType === 'replace') {
       if (upgrade.managerData.multiLine) {
         updateLineExp = regEx(
-          /^(?<depPart>\s+[^\s]+[\s]+[=][>]+\s+)(?<divider>[^\s]+\s+)[^\s]+/,
+          /^(?<depPart>\s+[^\s]+[\s]+[=][>]+\s+)(?<depName>[^\s]+)(?<divider>\s+)[^\s]+/,
         );
       } else {
         updateLineExp = regEx(
-          /^(?<depPart>replace\s+[^\s]+[\s]+[=][>]+\s+)(?<divider>[^\s]+\s+)[^\s]+/,
+          /^(?<depPart>replace\s+[^\s]+[\s]+[=][>]+\s+)(?<depName>[^\s]+)(?<divider>\s+)[^\s]+/,
         );
       }
     } else if (depType === 'require' || depType === 'indirect') {
