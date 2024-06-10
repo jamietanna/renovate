@@ -80,18 +80,15 @@ export function updateDependency({
     let newLine: string;
     let quote = '';
 
-    // istanbul ignore if: should never happen
-    if (!updateLineExp) {
-      return null
-    }
+    if (updateLineExp) {
+      const groups = lineToChange.match(updateLineExp)?.groups;
+      if (!groups) {
+        return fileContent
+      }
 
-    const groups = lineToChange.match(updateLineExp)?.groups;
-    if (!groups) {
-      return fileContent
-    }
-
-    if (`${groups.depName}`.startsWith('"')) {
-      quote = '"'
+      if (`${groups.depName}`.startsWith('"')) {
+        quote = '"'
+      }
     }
 
     if (
