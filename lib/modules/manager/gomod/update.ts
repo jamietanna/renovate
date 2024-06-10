@@ -96,13 +96,13 @@ export function updateDependency({
       newLine = lineToChange.replace(
         // TODO: can be undefined? (#22198)
         updateLineExp!,
-        `$<depPart>$<divider>${newDigestRightSized}`,
+        `$<depPart>${toPackageName}$<divider>${newDigestRightSized}`,
       );
     } else {
       newLine = lineToChange.replace(
         // TODO: can be undefined? (#22198)
         updateLineExp!,
-        `$<depPart>$<divider>${upgrade.newValue}`,
+        `$<depPart>${toPackageName}$<divider>${upgrade.newValue}`,
       );
     }
     if (upgrade.updateType === 'major') {
