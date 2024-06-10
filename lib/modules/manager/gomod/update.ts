@@ -78,6 +78,22 @@ export function updateDependency({
       return null;
     }
     let newLine: string;
+    let quote = '';
+
+    // istanbul ignore if: should never happen
+    if (!updateLineExp) {
+      return null
+    }
+
+    const groups = lineToChange.match(updateLineExp)?.groups;
+    if (!groups) {
+      return fileContent
+    }
+
+    if (`${groups.depName}`.startsWith('"')) {
+      quote = '"'
+    }
+
     if (
       upgrade.updateType === 'digest' ||
       upgrade.updateType === 'replacement' && upgrade.newDigest
@@ -95,14 +111,14 @@ export function updateDependency({
       );
       newLine = lineToChange.replace(
         // TODO: can be undefined? (#22198)
-        updateLineExp!,
-        `$<depPart>${toPackageName}$<divider>${newDigestRightSized}`,
+        updateLineExp,
+        `$<depPart>${quote}${toPackageName}${quote}$<divider>${newDigestRightSized}`,
       );
     } else {
       newLine = lineToChange.replace(
         // TODO: can be undefined? (#22198)
-        updateLineExp!,
-        `$<depPart>${toPackageName}$<divider>${upgrade.newValue}`,
+        updateLineExp,
+        `$<depPart>${quote}${toPackageName}${quote}$<divider>${upgrade.newValue}`,
       );
     }
     if (
