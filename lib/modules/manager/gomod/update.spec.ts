@@ -423,6 +423,21 @@ describe('modules/manager/gomod/update', () => {
       expect(res).toContain(`github.com/aws/aws-sdk-go-v2 v1.27.1`);
     });
 
+    it('should perform package replacements for indirect packages', () => {
+      const upgrade = {
+        depName: 'github.com/davecgh/go-spew',
+        managerData: { lineNumber: 4 },
+        newValue: 'v1.1.1',
+        depType: 'indirect',
+
+        updateType: 'replacement' as UpdateType,
+        newName: 'github.com/spew/go-spew',
+      };
+      const res = updateDependency({ fileContent: gomod1, upgrade });
+      expect(res).not.toEqual(gomod1);
+      expect(res).toContain(`${upgrade.newName} ${upgrade.newValue} // indirect`);
+    });
+
     it('should perform package replacements for a digest version', () => {
       const upgrade = {
         depName: 'golang.org/x/net',
