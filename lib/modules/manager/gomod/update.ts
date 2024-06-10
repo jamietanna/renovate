@@ -105,7 +105,10 @@ export function updateDependency({
         `$<depPart>${toPackageName}$<divider>${upgrade.newValue}`,
       );
     }
-    if (upgrade.updateType === 'major') {
+    if (
+      upgrade.updateType === 'major' ||
+      upgrade.updateType === 'replacement' && upgrade.newMajor
+    ) {
       logger.debug(`gomod: major update for ${toPackageName}`);
       if (toPackageName.startsWith('gopkg.in/')) {
         const oldV = toPackageName.split('.').pop();

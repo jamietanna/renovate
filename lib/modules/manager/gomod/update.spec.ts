@@ -459,6 +459,7 @@ describe('modules/manager/gomod/update', () => {
         depName: 'github.com/stretchr/testify',
         managerData: { lineNumber: 48, multiLine: true },
         newValue: 'v2.0.0',
+        newMajor: 2,
         depType: 'require',
 
         updateType: 'replacement' as UpdateType,
