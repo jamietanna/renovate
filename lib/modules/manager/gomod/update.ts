@@ -36,6 +36,9 @@ export function updateDependency({
     logger.trace({ upgrade, lineToChange }, 'go.mod current line');
     if (
       !lineToChange.includes(fromPackageNameNoVersion) &&
+      // TODO *******************************************
+      // TODO also check toPackageNameNoVersion ?
+      // TODO *******************************************
       !lineToChange.includes('rethinkdb/rethinkdb-go.v5')
     ) {
       logger.debug(
