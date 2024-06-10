@@ -419,7 +419,7 @@ describe('modules/manager/gomod/update', () => {
     it('should perform package replacements', () => {
       const upgrade = {
         depName: 'github.com/aws/aws-sdk-go',
-        managerData: { lineNumber: 4 },
+        managerData: { lineNumber: 3 },
         newValue: 'v1.27.1',
         depType: 'require',
 
